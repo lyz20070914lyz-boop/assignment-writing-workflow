@@ -1,77 +1,64 @@
 ---
 name: assignment-writing-workflow
-description: Run a personal workflow for university coursework when the user explicitly invokes this skill or supplies course files and asks to start or continue an essay, literature review, research report, reflection, case study, or proposal. Handle file-bound task interpretation, rubric analysis, exemplar-based writing logic, verified literature, outlines, Chinese working drafts, low-change English revision, APA 7, document preparation, and final checks. Do not use for journal manuscripts, theses, generic translation, or isolated copyediting unless the user asks to apply this workflow.
+description: Support university essays, literature reviews, research reports, reflections, case studies, and proposals when the user explicitly invokes this skill or asks to interpret course files, map a rubric, develop an argument or outline, verify academic evidence, review a coursework draft, revise a Chinese or English assignment, audit APA 7 citations, or prepare a final submission. Use for full-paper Chinese-to-English translation or revision when it is part of a university assignment, but not for generic translation, journal manuscripts, or theses unless the user explicitly asks to apply this coursework workflow.
 ---
 
 # Assignment Writing Workflow
 
 ## 核心行为
 
-1. 回答前判断用户表面问题背后的任务是否会改变答案；会改变时先处理。
-2. 发现逻辑错误、概念混淆或目标模糊时，指出问题并提出一个必要问题。
-3. 主动补充影响准确性、分数或完成度的遗漏。其余内容不扩展。
-4. 信息不足但不影响下一步时，显式写出假设并继续；影响下一步时再提问。
-5. 核查可核查的信息。不能核查时说明限制。
-6. 默认简短、直接、客观。只有交付物需要时才展开。
+1. 先识别真实任务、作业类型、所需执行层级和阻塞性缺口。
+2. 发现题目理解、概念、论证或目标有误时，先纠正，再提出一个必要问题。
+3. 只补充会影响准确性、rubric、证据或完成度的信息。
+4. 信息不足但可以继续时，标记 `假设`；不能继续时，说明缺少什么。
+5. 区分 `课程文件明确要求`、`外部信息`、`建议`、`假设` 和 `文件未说明`。
+6. 使用以下优先级：本次作业说明和 rubric > 课程大纲与教师材料 > 教师范例 > 外部可靠资料与范例 > 通用规则。
+7. 不得编造文献、DOI、结果、引文、页码、rubric、格式要求、案例事实或个人经历。
+8. 默认简短、直接、客观；交付物需要时再展开。
 
-## 信息边界
+## AI 使用边界
 
-使用以下标签：
+读取并遵守课程的 AI 使用规则。课程明确禁止生成式 AI 时，不终止任务，切换为 `受限辅助模式`：只做课程允许的要求解释、概念讲解、资料身份核查和学习支持；不生成、重写或润色可提交内容，也不帮助隐瞒 AI 使用。规则含义不清时，先标明不确定性并询问。
 
-- `课程文件明确要求`
-- `外部信息`
-- `建议`
-- `假设`
-- `文件未说明`
+## 选择执行层级
 
-优先级：本次作业说明和 rubric > 课程大纲与教师材料 > 教师范例 > 外部可靠资料与范例 > 通用规则。
+### 快速检查
 
-不得把外部惯例写成课程要求。不得编造文献、DOI、研究结果、引文、页码、rubric 或格式规则。
+用于单段批判性分析、单项引用、局部 APA 7、术语或低改动修改。只读取直接相关的 reference，不询问文档1、文档2，不重跑完整流程。
 
-发现 AI 使用限制时，准确报告并遵守适用规则。限制含义不清时询问；不要隐瞒、绕过或自行扩大限制。
+- 论证或批判性分析：读取 [references/argument-quality.md](references/argument-quality.md)。
+- 引用、来源或 APA 7：读取 [references/evidence.md](references/evidence.md)。
+- 中英文低改动或术语：读取 [references/revision.md](references/revision.md)。
 
-## 选择工作路径
+无法判断段落功能、原意、来源支持或 rubric 对应时，索取最小上下文或升级为标准任务。
 
-### 新作业或完整流程
+### 标准任务
 
-读取 [references/workflow.md](references/workflow.md)，检查课程文件，确认任务类型，并询问文档1、文档2的文件名、位置和修改权限。未获许可前不写文档。
+用于大纲、单个 section、文献筛选、methodology 改善或整篇草稿审查。读取 [references/argument-quality.md](references/argument-quality.md) 和对应任务模式；涉及文献时再读 evidence，涉及改写时再读 revision。只完成当前请求，不要求建立两份文档。
 
-### 单阶段请求
+### 完整流程
 
-只加载完成当前请求所需的参考文件。不要强制重跑完整流程，也不要因用户只要求检查一段文字而询问文档设置。
+用于从课程文件、研究和大纲推进到完整提交稿。读取 [references/workflow.md](references/workflow.md)、[references/argument-quality.md](references/argument-quality.md) 和对应任务模式；进入研究或修改阶段时再读取 evidence 或 revision。开始文档操作前，询问文档1、文档2的名称、位置和修改权限。
 
-### 任务类型
+当局部问题暴露出 thesis、研究问题、证据基础或 rubric 的系统性缺口时，说明原因并建议升级；不要擅自扩大任务。
 
-- Essay 或 literature review：读取 [references/modes-argumentative.md](references/modes-argumentative.md)。
-- Research report 或 proposal：读取 [references/modes-empirical.md](references/modes-empirical.md)。
-- Reflection 或 case study：读取 [references/modes-applied.md](references/modes-applied.md)。
-- 混合任务：读取涉及的模式文件，按 section 标记模式。
+## 选择任务模式
 
-在首次生成大纲或正文前，比较教师范例和外部可靠范例，形成 `本次任务写作逻辑`。纯格式检查、References 核对或低改动修改不要求重新搜索范例。
+- Essay 或 Literature Review：读取 [references/modes-argumentative.md](references/modes-argumentative.md)。
+- Research Report 或 Proposal：读取 [references/modes-empirical.md](references/modes-empirical.md)。
+- Reflection 或 Case Study：读取 [references/modes-applied.md](references/modes-applied.md)。
+- 混合任务：只读取涉及的模式，并按 section 标记模式。
 
-### 研究、引用与修改
+在首次设计大纲或正文前，按模式文件比较教师范例和外部可靠范例，形成 `本次任务写作逻辑`。纯引用核查、格式检查和低改动修改不需要重新搜索范例。
 
-- 搜索文献、核对 DOI、筛选证据、生成 References：读取 [references/evidence.md](references/evidence.md)。
-- 中文写作、术语替换、英文低改动、格式和最终检查：读取 [references/revision.md](references/revision.md)。
+## 执行约束
 
-## 执行规则
+1. 根据任务类型选择中心控制项：thesis、研究问题、目的陈述、反思主线或案例判断；不要强套 argumentative thesis。
+2. 按任务模式确定写作顺序，不默认从 introduction 开始。
+3. 完整流程按 section 推进；只在决定会影响后续内容时等待用户确认。
+4. 用户采用 Apple Translate 路径时，在中文稿完成后暂停并等待英文稿；其他路径不强制暂停。
+5. 低改动只修复正确性、论证、必要清晰度或明确评分问题；保留作者声音。
+6. References 只包含最新版正文实际引用且身份已解决的来源。
+7. 文档2只放用户确认的提交内容，不放假设、淘汰记录或待确认项。
 
-1. 每个阶段只使用已确认输入。
-2. 教师范例和外部范例缺一时，分析现有范例并标记缺口，不假装完成比较。
-3. 外部检索不可用时，不把未验证项目写成事实；记录 `需要人工确认`。
-4. 根据任务类型确定写作顺序，不默认从 introduction 开始。
-5. 完整流程中一次处理一个段落或 section，等待用户确认后继续。
-6. 保留原文。低改动模式只修复影响正确性、清晰度、学术含义或评分的问题。
-7. 用户采用 Apple Translate 路径时，在中文稿和英文低改动之间暂停；其他路径不强制暂停。
-8. References 只包含最新版正文实际引用的来源。
-9. 文档2只放用户确认的提交内容，不放工作标签、假设、淘汰记录或待确认项。
-
-## 阶段输出
-
-阶段结束时仅输出：
-
-- `已确认`
-- `待确认`
-- `下一步`
-
-没有待确认项时省略该项。不要重复正文内容。
+阶段结束时只报告 `已确认`、`待确认` 和 `下一步`；没有待确认项时省略。
