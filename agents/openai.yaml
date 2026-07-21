@@ -1,0 +1,4 @@
+interface:
+  display_name: "课程作业写作流程"
+  short_description: "按课程文件、rubric和范例管理完整作业流程"
+  default_prompt: "使用 $assignment-writing-workflow 读取我的课程文件，开始或继续这次作业。"
